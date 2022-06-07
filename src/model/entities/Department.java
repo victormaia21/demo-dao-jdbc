@@ -10,7 +10,7 @@ public class Department implements Serializable{
 	private Integer id;
 	private String name;
 	
-	Department(){
+	public Department(){
 	}
 	
 
