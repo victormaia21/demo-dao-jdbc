@@ -9,5 +9,4 @@ public class Daofactory {
 		return new SellerDaoJDBC(DB.getConnection());
 	}
 	
-
 }

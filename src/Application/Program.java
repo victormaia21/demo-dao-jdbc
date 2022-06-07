@@ -10,9 +10,12 @@ public class Program {
 		
 
 		Sellerdao sellerdao = Daofactory.createseller();
+		
 		Seller seller = sellerdao.findbyid(3);
 		
 		System.out.println(seller);
+
+	
 
 }
 	
