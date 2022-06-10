@@ -1,9 +1,12 @@
 package model.dao.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +28,42 @@ public class SellerDaoJDBC implements Sellerdao {
 
 	@Override
 	public void insert(Seller obj) {
+		PreparedStatement ps = null;
+		try {
+			ps = conn.prepareStatement(
+					"INSERT INTO seller "
+					+ "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
+					+ "VALUES "
+					+ "(?, ?, ?, ?, ?)",Statement.RETURN_GENERATED_KEYS
+					);
+			
+			ps.setString(1, obj.getName());
+			ps.setString(2, obj.getEmail());
+			ps.setDate(3,new java.sql.Date(obj.getBirthdate().getTime()));
+			ps.setDouble(4, obj.getBasesalary());
+			ps.setInt(5, obj.getDp().getId());
+			
+			int x = ps.executeUpdate();
+			
+			if(x>0) {
+				ResultSet rs = ps.getGeneratedKeys();
+				if(rs.next()) {
+					int id = rs.getInt(1);
+					obj.setId(id);
+				}
+				DB.closeResultSet(rs);
+			}
+			else {
+				throw new DbException("ERRO INESPERADO, NÃO OCORREU A QUEBRA DE LINHA");
+			}
+		}
+		
+		catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(ps);
+		}
 	}
 
 	@Override
