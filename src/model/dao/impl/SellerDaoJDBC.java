@@ -101,7 +101,7 @@ public class SellerDaoJDBC implements Sellerdao {
           
           try {
         	  ps = conn.prepareStatement(
-        			  "DELETE FROM seller\r\n"
+        			  "DELETE FROM seller"
         			  + "WHERE Id = ?"
         			  );
         	  
