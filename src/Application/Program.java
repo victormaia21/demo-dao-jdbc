@@ -40,6 +40,12 @@ public class Program {
 		System.out.println("Insert " + newseller.getId());
 		
 		
+		System.out.println("\\n=== TEST 5: seller Update =====");
+		seller = sellerdao.findbyid(1);
+		seller.setName("Martha weiner");
+		 sellerdao.update(seller);
+		System.out.println("Update completo");
+		
 		
 		
 		

@@ -1,12 +1,10 @@
 package model.dao.impl;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,6 +66,33 @@ public class SellerDaoJDBC implements Sellerdao {
 
 	@Override
 	public void update(Seller obj) {
+		PreparedStatement ps = null;
+		try {
+			ps = conn.prepareStatement(
+					"UPDATE seller\r\n"
+					+ "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ?\r\n"
+					+ "WHERE Id = ?"
+					);
+			
+			ps.setString(1, obj.getName());
+			ps.setString(2, obj.getEmail());
+			ps.setDate(3,new java.sql.Date(obj.getBirthdate().getTime()));
+			ps.setDouble(4, obj.getBasesalary());
+			ps.setInt(5, obj.getDp().getId());
+			ps.setInt(6, obj.getId());
+			
+			 ps.executeUpdate();
+			
+			
+		}
+		
+		catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(ps);
+		}
+		
 	}
 
 	@Override
@@ -165,7 +190,6 @@ public class SellerDaoJDBC implements Sellerdao {
 		}
 	}
 
-	@Override
 	public List<Seller> findbyDepartment(Department department) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
